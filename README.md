@@ -7,7 +7,7 @@ https://adventofcode.com/2020
 
 1. Clone this repository
    ```
-   https://github.com/scottmangiapane/advent-of-code-2020.git
+   git clone https://github.com/scottmangiapane/advent-of-code-2020.git
    ```
 2. Install dependencies
    ```

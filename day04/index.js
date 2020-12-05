@@ -33,19 +33,16 @@ function hasValidYears(map) {
 
 function hasValidHeight(map) {
     try {
-        const [, hgt] = /^(.+)(cm|in)$/.exec(map.hgt);
-        return (map.hgt.includes('in') && hgt >= 59 && hgt <= 76)
-            || (map.hgt.includes('cm') && hgt >= 150 && hgt <= 193);
+        const [, height, unit] = /^(.+)(cm|in)$/.exec(map.hgt);
+        return (unit === 'in' && height >= 59 && height <= 76)
+            || (unit === 'cm' && height >= 150 && height <= 193);
     } catch (err) { /* ignored */ }
     return false;
 }
 
-function hasValidHairColor(map) {
-    return /^#[0-9a-f]{6}$/.test(map.hcl);
-}
-
-function hasValidEyeColor(map) {
-    return /^amb|blu|brn|gry|grn|hzl|oth$/.test(map.ecl);
+function hasValidColors(map) {
+    return /^#[0-9a-f]{6}$/.test(map.hcl)
+        && /^amb|blu|brn|gry|grn|hzl|oth$/.test(map.ecl);
 }
 
 function hasValidPassportId(map) {
@@ -59,8 +56,7 @@ for (const passport of input) {
         count1++;
         if (hasValidYears(map)
             && hasValidHeight(map)
-            && hasValidHairColor(map)
-            && hasValidEyeColor(map)
+            && hasValidColors(map)
             && hasValidPassportId(map)) {
             count2++;
         }

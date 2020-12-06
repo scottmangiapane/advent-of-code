@@ -6,33 +6,21 @@ const input = fs
     .toString().trim().split('\n\n');
 
 let sum1 = 0;
+let sum2 = 0;
+
 for (const line of input) {
-    const parsed = line.replace(/\n/g, '');
+    const chars = line.replace(/\n/g, '');
     const questions = {};
-    for (let i = 0; i < parsed.length; i++) {
-        questions[parsed[i]] = true;
+    for (const char of chars) {
+        questions[char] = questions[char] + 1 || 1;
     }
     sum1 += Object.keys(questions).length;
-}
-
-let sum2 = 0;
-for (const line of input) {
-    const parsed = line.replace(/\n/g, '');
-    const questions = {};
-    for (let i = 0; i < parsed.length; i++) {
-        if (!!questions[parsed[i]]) {
-            questions[parsed[i]]++;
-        } else {
-            questions[parsed[i]] = 1;
+    const peopleCount = line.split('\n').length;
+    for (const q in questions) {
+        if (questions[q] === peopleCount) {
+            sum2++;
         }
     }
-    console.log(line.length + '; ' + JSON.stringify(questions));
-    for (const i in questions) {
-        if (questions[i] != line.split(/\r\n|\r|\n/).length) {
-            delete questions[i];
-        }
-    }
-    sum2 += Object.keys(questions).length;
 }
 
 console.log('Part 1: ' + chalk.green(sum1));

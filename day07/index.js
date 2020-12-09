@@ -35,6 +35,7 @@ function countParents(parentsFound, color) {
 }
 
 const part1 = countParents([], 'shiny gold') - 1;
+console.log('Part 1: ' + chalk.green(part1));
 
 function countChildren(color) {
     let count = 1;
@@ -45,6 +46,4 @@ function countChildren(color) {
 }
 
 const part2 = countChildren('shiny gold') - 1;
-
-console.log('Part 1: ' + chalk.green(part1));
 console.log('Part 2: ' + chalk.green(part2));

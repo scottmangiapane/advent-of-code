@@ -25,39 +25,41 @@ for (let i = 0; i < input.length - 1; i++) {
 
 console.log('Part 1: ' + chalk.green(j1 * j3));
 
-function createNode(value) {
-    return { value, next: [] };
+function findIndexFromValue(val) {
+    return input.findIndex(v => v === val);
 }
 
-function findNext(array, root) {
-    const i = array.findIndex(a => a === root.value);
-    return array.filter(a => a > array[i] && a <= array[i] + 3);
+function findParents(child) {
+    const index = findIndexFromValue(child);
+    return input.filter(val => val < input[index] && val >= input[index] - 3);
 }
 
-function addChildren(array, root) {
-    root.next = [];
-    const children = findNext(array, root);
-    for (const child of children) {
-        const node = createNode(child);
-        root.next.push(node);
-    }
-    for (const item of root.next) {
-        addChildren(input, item);
-    };
+const stepsTaken = {};
+
+for (const val of input) {
+    const steps = findParents(val)
+        .map(parent => stepsTaken[parent] || 1) // TODO remove "|| 0"?
+        .reduce((a, b) => a + b, 0);
+    stepsTaken[val] = steps;
 }
 
-function countPaths(root) {
-    if (root.next.length === 0) {
-        return 1;
-    }
-    let count = 0;
-    for (const item of root.next) {
-        count += countPaths(item);
-    }
-    return count;
-}
+console.log(JSON.stringify(stepsTaken));
 
-const root = createNode(input[0]);
-addChildren(input, root);
+// function fetchChildren(parent) {
+//     return map[parent];
+// }
 
-console.log('Part 2: ' + chalk.green(countPaths(root)));
+// function countChildren(root) {
+//     const children = fetchChildren(root);
+//     if (children.length === 0) {
+//         return 1;
+//     }
+//     let count = 0;
+//     for (const child of children) {
+//         count += countChildren(child);
+//     }
+//     return count;
+// }
+
+// const part2 = countChildren(input[0]);
+// console.log('Part 2: ' + chalk.green(part2));

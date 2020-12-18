@@ -6,29 +6,24 @@ const input = fs
     .toString().trim().split('\n');
 
 function reduce(line, solve) {
-    let reduced = line;
-    while (reduced.includes('(')) {
-        const start = reduced.indexOf('(');
-        if (start >= 0) {
-            let end;
-            let depth = 1;
-            for (end = start + 1; depth !== 0; end++) {
-                switch (reduced[end]) {
-                    case '(':
-                        depth++;
-                        break;
-                    case ')':
-                        depth--;
-                        break;
-                }
+    while (line.includes('(')) {
+        const start = line.indexOf('(');
+        let end;
+        let depth = 1;
+        for (end = start + 1; depth !== 0; end++) {
+            if (line[end] === '(') {
+                depth++;
             }
-            const left = reduced.substring(0, start);
-            const middle = reduced.substring(start, end);
-            const right = reduced.substring(end);
-            reduced = left + solve(middle.substring(1, middle.length - 1)) + right;
+            if (line[end] === ')') {
+                depth--;
+            }
         }
+        const left = line.substring(0, start);
+        const middle = line.substring(start, end);
+        const right = line.substring(end);
+        line = left + solve(middle.substring(1, middle.length - 1)) + right;
     }
-    return reduced;
+    return line;
 }
 
 function solveP1(line) {
@@ -40,13 +35,12 @@ function solveP1(line) {
             if (stack.length === 0) {
                 stack.push(parseInt(token));
             } else {
-                switch (stack.pop()) {
-                    case '+':
-                        stack.push(stack.pop() + parseInt(token));
-                        break;
-                    case '*':
-                        stack.push(stack.pop() * parseInt(token));
-                        break;
+                const last = stack.pop();
+                if (last === '+') {
+                    stack.push(stack.pop() + parseInt(token));
+                }
+                if (last === '*') {
+                    stack.push(stack.pop() * parseInt(token));
                 }
             }
         } else {
@@ -65,14 +59,11 @@ function solveP2(line) {
             if (stack.length === 0) {
                 stack.push(parseInt(token));
             } else {
-                switch (stack.pop()) {
-                    case '+':
-                        stack.push(stack.pop() + parseInt(token));
-                        break;
-                    case '*':
-                        stack.push('*');
-                        stack.push(parseInt(token));
-                        break;
+                if (stack[stack.length - 1] === '+') {
+                    stack.pop();
+                    stack.push(stack.pop() + parseInt(token));
+                } else {
+                    stack.push(parseInt(token));
                 }
             }
         } else {
@@ -95,5 +86,3 @@ for (const line of input) {
 }
 
 console.log('Part 2: ' + chalk.green(part2));
-
-// 718118721435

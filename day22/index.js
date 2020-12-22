@@ -1,4 +1,5 @@
 const chalk = require('chalk');
+const crypto = require('crypto');
 const fs = require('fs');
 
 const [input1, input2] = fs
@@ -30,8 +31,7 @@ function playCombat() {
         const card2 = deck2.shift();
         if (card1 > card2) {
             deck1.push(card1, card2);
-        }
-        if (card2 > card1) {
+        } else {
             deck2.push(card2, card1);
         }
     }
@@ -47,7 +47,10 @@ function playRecursiveCombat(template1, template2) {
     const deck2 = duplicateDeck(template2);
     const previousRounds = [];
     while (deck1.length > 0 && deck2.length > 0) {
-        const currentRound = JSON.stringify({ deck1, deck2 });
+        const currentRound = crypto
+            .createHash('sha1')
+            .update(JSON.stringify({ deck1, deck2 }))
+            .digest('base64');
         if (previousRounds.includes(currentRound)) {
             return true;
         }

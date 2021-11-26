@@ -1,7 +1,7 @@
 {
-  "name": "advent-of-code-2020",
+  "name": "advent-of-code",
   "version": "1.0.0",
-  "description": "Solutions for https://adventofcode.com/2020",
+  "description": "Solutions for https://adventofcode.com",
   "author": "Scott Mangiapane",
   "license": "MIT",
   "type": "module",

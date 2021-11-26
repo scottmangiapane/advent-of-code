@@ -1,13 +1,13 @@
-## Advent of Code (2020)
+## Advent of Code
 
-This is a Javascript set of solutions for the 2020 Advent of Code:
-https://adventofcode.com/2020
+This is my Javascript set of solutions for Advent of Code:
+https://adventofcode.com
 
 ## How to Install
 
 1. Clone this repository
    ```
-   git clone https://github.com/scottmangiapane/advent-of-code-2020.git
+   git clone https://github.com/scottmangiapane/advent-of-code.git
    ```
 2. Install dependencies
    ```

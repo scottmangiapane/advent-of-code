@@ -1,5 +1,5 @@
-const chalk = require('chalk');
-const fs = require('fs');
+import chalk from 'chalk';
+import * as fs from 'fs';
 
 const input = fs
     .readFileSync('day13/input.txt')

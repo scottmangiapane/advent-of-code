@@ -1,5 +1,5 @@
-const chalk = require('chalk');
-const fs = require('fs');
+import chalk from 'chalk';
+import * as fs from 'fs';
 
 String.prototype.replaceAt = function(index, replacement) {
     return this.substr(0, index)

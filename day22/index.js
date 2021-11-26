@@ -1,6 +1,6 @@
-const chalk = require('chalk');
-const crypto = require('crypto');
-const fs = require('fs');
+import chalk from 'chalk';
+import crypto from 'crypto'
+import * as fs from 'fs';
 
 const [input1, input2] = fs
     .readFileSync('day22/input.txt')

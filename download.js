@@ -40,15 +40,12 @@ async function mkdir(year, day) {
     return path;
 }
 
-async function fetchPage(year, day) {
-    const url = 'https://adventofcode.com/' + year + '/day/' + day;
-    const response = await fetch(url, {
-        headers: {
-            'cookie': 'session=' + token
-        }
-    });
-    const body = await response.text();
-    return body;
+async function fetchPage(year, day, suffix) {
+    const url = (suffix)
+        ? 'https://adventofcode.com/' + year + '/day/' + day + '/' + suffix
+        : 'https://adventofcode.com/' + year + '/day/' + day;
+    const response = await fetch(url, { headers: { 'cookie': 'session=' + token } });
+    return await response.text();
 }
 
 async function main() {
@@ -58,13 +55,14 @@ async function main() {
         console.log('usage: node init [year] [day]');
     } else {
         const path = await mkdir(year, day);
-        const page = await fetchPage(year, day);
+        const input = await fetchPage(year, day, 'input');
+        await fs.writeFile(`${ path }/input.txt`, input);
+        const page = await fetchPage(year, day, '');
         const $ = cheerio.load(page);
         $('article.day-desc').each(async (index, element) => {
-            const fileName = `${ path }/part${ index + 1 }.md`;
             const html = $.html(element);
             const markdown = turndownService.turndown(html);
-            await fs.writeFile(fileName, markdown);
+            await fs.writeFile(`${ path }/part${ index + 1 }.md`, markdown);
         });
     }
 }

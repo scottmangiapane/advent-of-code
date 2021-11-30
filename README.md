@@ -28,8 +28,8 @@ During development it is useful to have scripts re-run automatically when change
 npx nodemon 2020/day01
 ```
 
-There is also a helper script installed to download the questions for any given day and convert them to markdown. Since part 2 questions are only available for accounts that have completed the corresponding part 1 question, an auth token is required. Use the script like so:
+There is also a helper script installed to download the questions for any given day and convert them to markdown. It also downloads the input file. Because this is unique for each user, an auth token is required:
 ```
-export AUTH=<your_session_token>
+export AUTH=<your_session_cookie>
 node download <year> <day>
 ```

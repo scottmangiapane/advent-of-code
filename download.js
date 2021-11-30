@@ -1,3 +1,11 @@
+/*
+ * This script downloads the questions for any given day and converts them to markdown. It also
+ * downloads the input file. Because this is unique for each user, an auth token is required:
+ *
+ *     export AUTH=<your_session_cookie>
+ *     node download <year> <day>
+ */
+
 import * as cheerio from 'cheerio';
 import { promises as fs } from 'fs';
 import fetch from 'node-fetch';
@@ -51,7 +59,9 @@ async function fetchPage(year, day, suffix) {
 async function main() {
     const year = parseYear();
     const day = parseDay();
-    if (year === null || day === null) {
+    if (!token) {
+        console.log('You must store your session cookie in the "AUTH" env variable before use.');
+    } else if (!year || !day) {
         console.log('usage: node download [year] [day]');
     } else {
         const path = await mkdir(year, day);

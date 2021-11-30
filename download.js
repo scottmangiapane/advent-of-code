@@ -44,7 +44,7 @@ async function fetchPage(year, day, suffix) {
     const url = (suffix)
         ? 'https://adventofcode.com/' + year + '/day/' + day + '/' + suffix
         : 'https://adventofcode.com/' + year + '/day/' + day;
-    const response = await fetch(url, { headers: { 'cookie': 'session=' + token } });
+    const response = await fetch(url, { headers: { cookie: 'session=' + token } });
     return await response.text();
 }
 
@@ -52,7 +52,7 @@ async function main() {
     const year = parseYear();
     const day = parseDay();
     if (year === null || day === null) {
-        console.log('usage: node init [year] [day]');
+        console.log('usage: node download [year] [day]');
     } else {
         const path = await mkdir(year, day);
         const input = await fetchPage(year, day, 'input');

@@ -1,17 +1,20 @@
 /*
  * This script downloads the questions for any given day and converts them to markdown. It also
- * downloads the input file. Because this is unique for each user, an auth token is required:
+ * downloads the input file. Because this is unique for each user, you must first copy your session
+ * cookie into the `.env` file.
  *
- *     export AUTH=<your_session_cookie>
  *     node download <year> <day>
  */
 
 import * as cheerio from 'cheerio';
+import dotenv from 'dotenv';
 import { promises as fs } from 'fs';
 import fetch from 'node-fetch';
 import Turndown from 'turndown';
 
-const token = process.env.AUTH;
+dotenv.config();
+
+const token = process.env.SESSION_COOKIE;
 const turndownService = new Turndown();
 
 function parseYear() {
@@ -60,7 +63,7 @@ async function main() {
     const year = parseYear();
     const day = parseDay();
     if (!token) {
-        console.log('You must store your session cookie in the "AUTH" env variable before use.');
+        console.log('You must store your session cookie in .env file before use.');
     } else if (!year || !day) {
         console.log('usage: node download [year] [day]');
     } else {

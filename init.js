@@ -48,7 +48,7 @@ async function mkdir(path) {
     try {
         await fs.access(path);
     } catch(ignored) {
-        await fs.mkdir(path);
+        await fs.mkdir(path, { recursive: true });
     }
     return path;
 }

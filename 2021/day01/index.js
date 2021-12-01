@@ -2,22 +2,14 @@ import chalk from 'chalk';
 import { promises as fs } from 'fs';
 
 const input = (await fs.readFile('2021/day01/input.txt'))
-    .toString().trim().split('\n');
+    .toString().trim().split('\n').map(line => parseInt(line));
 
 function solve(windowSize) {
-    let sum = 0;
-    for (let i = 0; i < windowSize && i < input.length; i++) {
-        sum += parseInt(input[i]);
-    }
     let count = 0;
-    let last = sum;
     for (let i = 0; i < input.length - windowSize; i++) {
-        sum -= parseInt(input[i]);
-        sum += parseInt(input[i + windowSize]);
-        if (sum > last) {
+        if (input[i + windowSize] > input[i]) {
             count++;
         }
-        last = sum;
     }
     return count;
 }

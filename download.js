@@ -6,6 +6,7 @@
  *     node download <year> <day>
  */
 
+import chalk from 'chalk';
 import * as cheerio from 'cheerio';
 import dotenv from 'dotenv';
 import { promises as fs } from 'fs';
@@ -59,6 +60,16 @@ async function fetchPage(year, day, suffix) {
     return await response.text();
 }
 
+function print(fileName, file) {
+    console.log(fileName);
+    const head = file
+        .split('\n')
+        .slice(0, 10)
+        .join('\n');
+    const ellipses = (head.length !== file.length) ? '\n...' : '';
+    console.log(chalk.dim(head + ellipses));
+}
+
 async function main() {
     const year = parseYear();
     const day = parseDay();
@@ -69,6 +80,7 @@ async function main() {
     } else {
         const path = await mkdir(year, day);
         const input = await fetchPage(year, day, 'input');
+        print('input.txt', input);
         await fs.writeFile(`${ path }/input.txt`, input);
         const page = await fetchPage(year, day, '');
         const $ = cheerio.load(page);

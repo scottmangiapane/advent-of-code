@@ -91,9 +91,9 @@ async function initBoilerplate(path) {
             }
 
             const p1 = solveP1();
-            const p2 = solveP2();
-
             console.log('Part 1: ' + chalk.green(p1));
+
+            const p2 = solveP2();
             console.log('Part 2: ' + chalk.green(p2));
             `;
         await fs.writeFile(path + '/index.js', content);

@@ -12,8 +12,9 @@ const input = (await fs.readFile('2021/day05/input.txt'))
         };
     });
 
-function solveP1() {
-    const points = {};
+const points = {};
+
+function addStraightLines() {
     for (const line of input) {
         const { x1, y1, x2, y2 } = line;
         if (y1 === y2) {
@@ -31,27 +32,11 @@ function solveP1() {
             }
         }
     }
-    return Object.values(points).filter(p => p >= 2).length;
 }
 
-function solveP2() {
-    const points = {};
+function addDiagonalLines() {
     for (const line of input) {
         const { x1, y1, x2, y2 } = line;
-        if (y1 === y2) {
-            const min = Math.min(x1, x2);
-            const max = Math.max(x1, x2);
-            for (let i = min; i <= max; i++) {
-                process(points, i, y1);
-            }
-        }
-        if (x1 === x2) {
-            const min = Math.min(y1, y2);
-            const max = Math.max(y1, y2);
-            for (let i = min; i <= max; i++) {
-                process(points, x1, i);
-            }
-        }
         if (x1 !== x2 && y1 !== y2) {
             const xMin = Math.min(x1, x2);
             const xMax = Math.max(x1, x2);
@@ -63,7 +48,6 @@ function solveP2() {
             }
         }
     }
-    return Object.values(points).filter(p => p >= 2).length;
 }
 
 function process(points, x, y) {
@@ -71,10 +55,10 @@ function process(points, x, y) {
     points[`${ x }_${ y }`]++;
 }
 
-const p1 = solveP1();
+addStraightLines();
+const p1 = Object.values(points).filter(p => p >= 2).length;
 console.log('Part 1: ' + chalk.green(p1));
 
-const p2 = solveP2();
+addDiagonalLines();
+const p2 = Object.values(points).filter(p => p >= 2).length;
 console.log('Part 2: ' + chalk.green(p2));
-
-// < 963065

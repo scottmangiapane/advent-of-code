@@ -1,6 +1,9 @@
 import chalk from 'chalk';
 import { promises as fs } from 'fs';
 
+// 44088
+// 23670
+
 const input = (await fs.readFile('2021/day04/input.txt'))
     .toString()
     .trim()
@@ -9,6 +12,7 @@ const input = (await fs.readFile('2021/day04/input.txt'))
 const nums = input[0]
     .split(',')
     .map(num => parseInt(num));
+
 const boards = input
     .slice(1)
     .map(board => board
@@ -18,55 +22,48 @@ const boards = input
             .split(/ +/)
             .map(num => parseInt(num))));
 
+const size = boards[0].length;
+
+const calledNums = {};
+
 function solveP1() {
     for (const num of nums) {
         for (const board of boards) {
-            for (let i = 0; i < board.length; i++) {
-                for (let j = 0; j < board[i].length; j++) {
+            for (let i = 0; i < size; i++) {
+                for (let j = 0; j < size; j++) {
                     if (board[i][j] === num) {
-                        board[i][j] = true;
-                        if (hasBingo(board)) {
+                        if (hasBingo(board, i, j)) {
                             return calculateScore(board, num);
                         }
                     }
                 }
             }
         }
+        calledNums[num] = true;
     }
+    return '(╯°□°)╯︵ ┻━┻';
 }
 
-function hasBingo(board) {
-    for (let i = 0; i < board.length; i++) {
-        let hasBingo = true;
-        for (let j = 0; j < board[i].length; j++) {
-            if (board[i][j] !== true) {
-                hasBingo = false;
-            }
+function hasBingo(board, i, j) {
+    let hasBingoHorz = true;
+    let hasBingoVert = true;
+    for (let k = 0; k < size; k++) {
+        if (!calledNums[board[i][k]]) {
+            hasBingoHorz = false;
         }
-        if (hasBingo) {
-            return true;
-        }
-    }
-    for (let i = 0; i < board[0].length; i++) {
-        let hasBingo = true;
-        for (let j = 0; j < board.length; j++) {
-            if (board[j][i] !== true) {
-                hasBingo = false;
-            }
-        }
-        if (hasBingo) {
-            return true;
+        if (!calledNums[board[k][j]]) {
+            hasBingoVert = false;
         }
     }
-    return false;
+    return hasBingoHorz || hasBingoVert;
 }
 
 function calculateScore(board, num) {
     let sum = 0;
-    for (let i = 0; i < board.length; i++) {
-        for (let j = 0; j < board[i].length; j++) {
-            if (board[i][j] !== true) {
-                sum += board[i][j];
+    for (const row of board) {
+        for (const value of row) {
+            if (value !== 'MATCH') {
+                sum += value;
             }
         }
     }
@@ -79,8 +76,8 @@ function solveP2() {
     for (const num of nums) {
         for (let b = 0; b < boards.length; b++) {
             const board = boards[b];
-            for (let i = 0; i < board.length; i++) {
-                for (let j = 0; j < board[i].length; j++) {
+            for (let i = 0; i < size; i++) {
+                for (let j = 0; j < size; j++) {
                     if (board[i][j] === num) {
                         board[i][j] = true;
                         if (hasBingo(board)) {
@@ -112,8 +109,5 @@ function solveP2() {
 const p1 = solveP1();
 console.log('Part 1: ' + chalk.green(p1));
 
-const p2 = solveP2();
-console.log('Part 2: ' + chalk.green(p2));
-
-// 44088
-// 23670
+// const p2 = solveP2();
+// console.log('Part 2: ' + chalk.green(p2));

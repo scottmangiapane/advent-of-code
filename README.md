@@ -14,7 +14,7 @@ https://adventofcode.com
    npm i
    ```
 
-## How to Use
+## How to Run
 
 To run a solution, use the following command:
 ```

@@ -22,7 +22,7 @@ const turndownService = new Turndown();
 function parseYear() {
     if (process.argv.length === 4) {
         const year = parseInt(process.argv[2]);
-        if (!isNaN(year) && year >= 2020 && year <= 2021) {
+        if (!isNaN(year)) {
             return year;
         }
     }
@@ -122,7 +122,7 @@ async function main() {
     if (!token) {
         console.log('You must store your session cookie in the .env file before use.');
     } else if (!year || !day) {
-        console.log('usage: node download [year] [day]');
+        console.log('usage: node init [year] [day]');
     } else {
         const path = getPath(year, day);
         await mkdir(path);

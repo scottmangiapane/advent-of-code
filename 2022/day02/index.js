@@ -6,36 +6,27 @@ const input = (await fs.readFile('2022/day02/input.txt'))
 
 function solveP1() {
     let sum = 0;
-    const m1 = {
-        'A': 1,
+    const points = {
         'X': 1,
-        'B': 2,
         'Y': 2,
-        'C': 3,
         'Z': 3,
     };
-    const m2 = {
-        'A': ['C', 'Z'],
-        'X': ['C', 'Z'],
-        'B': ['A', 'X'],
-        'Y': ['A', 'X'],
-        'C': ['B', 'Y'],
-        'Z': ['B', 'Y'],
+    const win = {
+        'X': 'C',
+        'Y': 'A',
+        'Z': 'B',
     };
-    const m3 = {
-        'A': 'X',
+    const draw = {
         'X': 'A',
-        'B': 'Y',
         'Y': 'B',
-        'C': 'Z',
         'Z': 'C',
     };
     for (const line of input) {
-        sum += m1[line[1]];
-        if (m2[line[1]].includes(line[0])) {
+        sum += points[line[1]];
+        if (win[line[1]] === line[0]) {
             sum += 6;
         }
-        if (m3[line[1]] === line[0]) {
+        if (draw[line[1]] === line[0]) {
             sum += 3;
         }
     }
@@ -44,33 +35,30 @@ function solveP1() {
 
 function solveP2() {
     let sum = 0;
+    const lose = {
+        'A': 3,
+        'B': 1,
+        'C': 2,
+    };
+    const draw = {
+        'A': 1,
+        'B': 2,
+        'C': 3,
+    };
+    const win = {
+        'A': 2,
+        'B': 3,
+        'C': 1,
+    };
     for (const line of input) {
-        const lose = {
-            'A': 3,
-            'B': 1,
-            'C': 2,
-        };
-        const draw = {
-            'A': 1,
-            'B': 2,
-            'C': 3,
-        };
-        const win = {
-            'A': 2,
-            'B': 3,
-            'C': 1,
-        };
         switch (line[1]) {
-            case 'X':
-                // lose
+            case 'X': // lose
                 sum += lose[line[0]];
                 break;
-            case 'Y':
-                // draw
+            case 'Y': // draw
                 sum += draw[line[0]] + 3;
                 break;
-            case 'Z':
-                // win
+            case 'Z': // win
                 sum += win[line[0]] + 6;
                 break;
         }

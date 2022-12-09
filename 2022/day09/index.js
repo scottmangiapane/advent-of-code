@@ -15,19 +15,25 @@ const directionMap = {
     'D': { xDelta: 0, yDelta: 1 },
 }
 
-function movePoint(x1, y1, x2, y2) {
-    if (x1 != x2 && Math.abs(y1 - y2) > 1
-        || y1 != y2 && Math.abs(x1 - x2) > 1) {
-        x2 += (x1 - x2) / Math.abs(x1 - x2);
-        y2 += (y1 - y2) / Math.abs(y1 - y2);
-    } else
-    if (Math.abs(x1 - x2) > 1) {
-        x2 += (x1 - x2) / Math.abs(x1 - x2);
-    } else
-    if (Math.abs(y1 - y2) > 1) {
-        y2 += (y1 - y2) / Math.abs(y1 - y2);
+function followPoint(x1, y1, x2, y2) {
+    const xDelta = x1 - x2;
+    const yDelta = y1 - y2;
+    if (x1 != x2 && Math.abs(yDelta) > 1 || y1 != y2 && Math.abs(xDelta) > 1) {
+        x2 += (xDelta) / Math.abs(xDelta);
+        y2 += (yDelta) / Math.abs(yDelta);
+    } else if (Math.abs(xDelta) > 1) {
+        x2 += (xDelta) / Math.abs(xDelta);
+    } else if (Math.abs(yDelta) > 1) {
+        y2 += (yDelta) / Math.abs(yDelta);
     }
     return { x: x2, y: y2 };
+}
+
+function storeTailVisit(tailVisits, x, y) {
+    tailVisits[x] = tailVisits[x] || [];
+    if (!tailVisits[x].includes(y)) {
+        tailVisits[x].push(y);
+    }
 }
 
 function solve(size) {
@@ -40,14 +46,11 @@ function solve(size) {
         yList[0] += yDelta * amount;
         for (let i = 0; i < amount; i++) {
             for (let j = 0; j < size - 1; j++) {
-                const { x, y } = movePoint(xList[j], yList[j], xList[j + 1], yList[j + 1]);
+                const { x, y } = followPoint(xList[j], yList[j], xList[j + 1], yList[j + 1]);
                 xList[j + 1] = x;
                 yList[j + 1] = y;
             }
-            tailVisits[xList[size - 1]] = tailVisits[xList[size - 1]] || [];
-            if (!tailVisits[xList[size - 1]].includes(yList[size - 1])) {
-                tailVisits[xList[size - 1]].push(yList[size - 1]);
-            }
+            storeTailVisit(tailVisits, xList[size - 1], yList[size - 1]);
         }
     }
     return Object.values(tailVisits)

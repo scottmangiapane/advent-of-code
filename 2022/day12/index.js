@@ -9,18 +9,15 @@ function createMap(height, width, value) {
 }
 
 function findLandmarks() {
-    const start = { i: null, j: null };
-    const end = { i: null, j: null };
+    let start, end;
     for (let i = 0; i < input.length; i++) {
         for (let j = 0; j < input[i].length; j++) {
             switch (input[i][j]) {
                 case 'S':
-                    start.i = i;
-                    start.j = j;
+                    start = { i, j };
                     break;
                 case 'E':
-                    end.i = i;
-                    end.j = j;
+                    end = { i, j };
                     break;
             }
         }
@@ -43,34 +40,16 @@ function canStepTo(i1, j1, i2, j2) {
     return false;
 }
 
-function solveP1() {
+function solve(flexibleStart) {
     const visited = createMap(input.length, input[0].length, false);
     const { start, end } = findLandmarks();
     const q = [{ point: start, steps: 0 }];
-    while (q.length) {
-        const { point: { i, j }, steps } = q.shift();
-        if (i === end.i && j === end.j) {
-            return steps;
-        }
-        if (!visited[i][j]) {
-            if (canStepTo(i, j, i - 1, j)) { q.push({ point: { i: i - 1, j }, steps: steps + 1}); }
-            if (canStepTo(i, j, i + 1, j)) { q.push({ point: { i: i + 1, j }, steps: steps + 1}); }
-            if (canStepTo(i, j, i, j - 1)) { q.push({ point: { i, j: j - 1 }, steps: steps + 1}); }
-            if (canStepTo(i, j, i, j + 1)) { q.push({ point: { i, j: j + 1 }, steps: steps + 1}); }
-        }
-        visited[i][j] = true;
-    }
-    return '???';
-}
-
-function solveP2() {
-    const visited = createMap(input.length, input[0].length, false);
-    const { start, end } = findLandmarks();
-    const q = [{ point: start, steps: 0 }];
-    for (let i = 0; i < input.length; i++) {
-        for (let j = 0; j < input.length; j++) {
-            if (input[i][j] === 'a') {
-                q.push({ point: { i, j }, steps: 0 });
+    if (flexibleStart) {
+        for (let i = 0; i < input.length; i++) {
+            for (let j = 0; j < input.length; j++) {
+                if (input[i][j] === 'a') {
+                    q.push({ point: { i, j }, steps: 0 });
+                }
             }
         }
     }
@@ -90,8 +69,8 @@ function solveP2() {
     return '???';
 }
 
-const p1 = solveP1();
+const p1 = solve(false);
 console.log('Part 1: ' + chalk.green(p1));
 
-const p2 = solveP2();
+const p2 = solve(true);
 console.log('Part 2: ' + chalk.green(p2));
